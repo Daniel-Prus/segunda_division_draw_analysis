@@ -149,9 +149,15 @@ class _DataOrganizer:
                     second_team = league_table.Team.loc[index + 1]
                     winner = self.__winner_team_in_direct_matches(fixtures_filtered, first_team, second_team)
                     if first_team == winner:
-                        new_league_table_index.append(index)
+                        if index in new_league_table_index:
+                            pass
+                        else:
+                            new_league_table_index.append(index)
                     elif winner is None:
-                        new_league_table_index.append(index)
+                        if index in new_league_table_index:
+                            pass
+                        else:
+                            new_league_table_index.append(index)
 
                     else:
                         new_league_table_index.append(index + 1)

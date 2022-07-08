@@ -2,15 +2,15 @@ from bs4 import BeautifulSoup
 import requests as req
 import pandas as pd
 
-seasons = [2018, 2019, 2020, 2021]
+SEASONS = [2018, 2019, 2020, 2021]
 
 # code to find league - ES - Espanyol, 2 - second league level
-code = 'ES2'
+CODE = 'ES2'
 
 # link that works for all leagues (change only code & season for request)
 # url = f'https://www.transfermarkt.com/laliga2/startseite/wettbewerb/{code}/plus/?saison_id={season}'
 
-headers = {
+HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
 data = {'team': [],
@@ -22,10 +22,10 @@ data = {'team': [],
         'total_market_value': []}
 
 # web scraping
-for season in seasons:
-    url = f'https://www.transfermarkt.com/laliga2/startseite/wettbewerb/{code}/plus/?saison_id={season}'
+for season in SEASONS:
+    url = f'https://www.transfermarkt.com/laliga2/startseite/wettbewerb/{CODE}/plus/?saison_id={SEASONS}'
 
-    response = req.get(url, headers=headers)
+    response = req.get(url, headers=HEADERS)
     bs = BeautifulSoup(response.content, 'html.parser')
 
     all_tr = bs.find_all('tr', {'class': ['odd', 'even']}, limit=22)  # limit - number of teams in the league
@@ -42,7 +42,6 @@ for season in seasons:
         data['total_market_value'].append(all_td[6].text)
 
 # create dataframe
-
 df = pd.DataFrame(data)
 
 
@@ -66,4 +65,4 @@ df.to_csv('team_market_value')
 
 if __name__ == '__main__':
     print(df.head())
-    df.to_csv('team_market_value_web_scraping.csv', index=False)
+    df.to_csv('team_market_value_web_scraping_2.csv', index=False)
